@@ -63,9 +63,10 @@ def obtenerCanciones():
 def obtenerbusqueda(palabra):
     global Canciones
     Datos = []
+    Palabra = palabra.lower()
     for us in Canciones:
-        cadena = us.getNombre()
-        if cadena.find(palabra) >= 0:
+        cadena = us.getNombre().lower()
+        if cadena.find(Palabra) >= 0:
             Dato = { 
             'id':us.getId(),
             'nombre':us.getNombre(), 
@@ -316,6 +317,9 @@ def ActuzaliarPersona():
                 Usuarios[i].setContrasena(request.json['contrasena']) 
                 Dato = {'message':'Success', 'reason':'los datos han sido actualizados'}
                 break
+        for i in range(len(Playlist)):
+            if Buscar == Playlist[i].getUser():
+               Playlist[i].setUser(request.json['user']) 
     else:
          Dato = {'message':'Failed', 'reason':'El usuario ya esta registrado'}
     Respuesta = jsonify(Dato)
@@ -458,4 +462,4 @@ def AgregarCometario():
     return (respuesta)
 
 if __name__ == "__main__":
-    app.run(port = 3000, debug = True)
+    app.run(threaded = True, host = "0.0.0.0", port = 5000, debug = True)
